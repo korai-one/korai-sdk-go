@@ -1,0 +1,17 @@
+# oapi-codegen config — generates the typed transport core into the
+# koraiapi subpackage from the single source of truth
+# (../../specs/openapi.yaml). The hand-written ergonomic layer (the
+# root-package client.go, streaming helpers, tool-runner) wraps this
+# generated core; koraiapi/*.gen.go is never edited by hand.
+# Regenerate with `go generate ./...` (see gen.go) or `make gen`.
+package: koraiapi
+output: koraiapi/koraiapi.gen.go
+generate:
+  models: true
+  client: true
+output-options:
+  skip-prune: true
+# Public SDK surface only: generated from the DERIVED public spec
+# (specs.v30.yaml is down-converted from specs/openapi.public.yaml — see
+# gen.go), which already excludes every `x-internal: true` operation (dropped
+# by openapi-format; see scripts/codegen.sh). The partition lives in the spec.
